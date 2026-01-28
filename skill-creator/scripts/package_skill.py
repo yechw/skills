@@ -69,6 +69,12 @@ def package_skill(skill_path, output_dir=None):
             # Walk through the skill directory
             for file_path in skill_path.rglob('*'):
                 if file_path.is_file():
+                    # Skip common directories that shouldn't be in a skill
+                    if '.venv' in file_path.parts or '__pycache__' in file_path.parts:
+                        continue
+                    if '.pyc' in file_path.suffixes or '.pyo' in file_path.suffixes:
+                        continue
+
                     # Calculate the relative path within the zip
                     arcname = file_path.relative_to(skill_path.parent)
                     zipf.write(file_path, arcname)
