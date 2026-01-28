@@ -3,7 +3,7 @@
 Download Xiaoyuzhou podcast episode audio file.
 
 This script extracts the audio URL from a Xiaoyuzhou episode page
-and downloads it to ~/Downloads/music/xyz/ with the episode title.
+and downloads it to ~/Downloads/music/xyz/[频道名]/ with the episode title.
 """
 
 import argparse
@@ -221,8 +221,8 @@ def main():
     parser.add_argument('url', help='Xiaoyuzhou episode URL')
     parser.add_argument(
         '-o', '--output-dir',
-        default='~/Downloads/music/xyz/',
-        help='Output directory (default: ~/Downloads/music/xyz/)'
+        default=None,
+        help='Custom output directory (default: ~/Downloads/music/xyz/{频道名}/)'
     )
     parser.add_argument(
         '-f', '--filename',
@@ -239,13 +239,22 @@ def main():
         print(f"Audio URL: {audio_url}")
 
         # Determine output path
-        output_dir = Path(args.output_dir).expanduser()
+        # If --output-dir is specified, use it; otherwise use ~/Downloads/music/xyz/{频道名}/
+        if args.output_dir:
+            output_dir = Path(args.output_dir).expanduser()
+        else:
+            output_dir = Path('~/Downloads/music/xyz').expanduser() / channel_name
 
-        # Generate filename: {频道名} - {单集标题名}
+        # Generate filename: {单集标题名} (if using default channel directory)
+        # or {频道名} - {单集标题名} (if using custom output directory)
         if args.filename:
             filename = args.filename
-        else:
+        elif args.output_dir:
+            # Custom directory: include channel name in filename
             filename = f"{channel_name} - {episode_title}"
+        else:
+            # Default channel directory: only episode title in filename
+            filename = episode_title
 
         output_path = output_dir / filename
 

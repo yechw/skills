@@ -18,7 +18,10 @@
       "Bash(gh pr list:*)",
       "Bash(gh repo view:*)",
       "Bash(zip:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(unzip:*)",
+      "Bash(find:*)",
+      "Bash(tree:*)"
     ]
   }
 }

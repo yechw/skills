@@ -1,9 +1,9 @@
 ---
-name: xyz-episode
+name: xyz-podcast-downloader
 description: Download Xiaoyuzhou (小宇宙) podcast episode audio files. Use when the user provides a Xiaoyuzhou podcast URL and asks to download the episode, extract audio, save the podcast, or mentions "小宇宙播客下载", "下载播客音频", or similar requests to save podcast episodes from xiaoyuzhou.fm URLs.
 ---
 
-# Xyz Episode
+# Xyz Podcast Downloader
 
 Download audio files from Xiaoyuzhou (小宇宙) podcast episodes with automatic title extraction and organized file saving.
 
@@ -19,7 +19,7 @@ Use this skill when:
 
 ### Basic Usage
 
-Download an episode to the default location (`~/Downloads/music/xyz/`):
+Download an episode to the default location (`~/Downloads/music/xyz/{频道名}/`):
 
 ```bash
 python3 scripts/download_episode.py "https://www.xiaoyuzhou.fm/episode/..."
@@ -28,15 +28,22 @@ python3 scripts/download_episode.py "https://www.xiaoyuzhou.fm/episode/..."
 The script will:
 1. Parse the webpage and extract the channel name and episode title
 2. Find the .m4a audio file URL
-3. Download the file using the format "{频道名} - {单集标题名}" as the filename
-4. Save to `~/Downloads/music/xyz/`
+3. Download the file with the episode title as the filename
+4. Save to `~/Downloads/music/xyz/{频道名}/` (channel-specific directory)
+
+**Example**: For "知行小酒馆" channel's episode "E160 牛市（少）亏钱指南", the file will be saved to:
+- Path: `~/Downloads/music/xyz/知行小酒馆/E160 牛市（少）亏钱指南.m4a`
 
 ### Custom Output Directory
+
+Use `--output-dir` to specify a custom directory:
 
 ```bash
 python3 scripts/download_episode.py "https://www.xiaoyuzhou.fm/episode/..." \
   --output-dir ~/Podcasts/
 ```
+
+When using a custom output directory, the filename format changes to `{频道名} - {单集标题名}.m4a` to include the channel name.
 
 ### Custom Filename
 
@@ -118,16 +125,16 @@ Channel: 科技早知道
 Episode: 技术漫谈第42期
 Audio URL: https://audio.xiaoyuzhou.fm/episode_12345678.m4a
 
-Downloading to: /Users/user/Downloads/music/xyz/科技早知道 - 技术漫谈第42期.m4a
+Downloading to: /Users/user/Downloads/music/xyz/科技早知道/技术漫谈第42期.m4a
 File size: 45.67 MB
 Progress: 100.0%
-✅ Downloaded: 科技早知道 - 技术漫谈第42期.m4a
+✅ Downloaded: 技术漫谈第42期.m4a
 ```
 
 **Example 2: Download to custom location**
 ```bash
 python3 scripts/download_episode.py "https://www.xiaoyuzhou.fm/episode/87654321" \
-  -o ~/Music/Podcasts/
+  --output-dir ~/Music/Podcasts/
 ```
 
 **Example 3: Custom filename**
